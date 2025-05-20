@@ -62,14 +62,45 @@ const CustomersPage = () => {
     deleteCustomer(id);
   };
 
-  const renderSales = (customerId: string) => {
-    const sales = getSalesByCustomerId(customerId);
-    return sales.map((sale) => (
-      <div key={sale.id}>
-        {sale.platform} - {sale.price} USD
-      </div>
-    ));
-  };
+  const columns = [
+    {
+      key: 'name',
+      header: 'Nombre',
+      sortable: true,
+    },
+    {
+      key: 'phone',
+      header: 'Teléfono',
+      sortable: true,
+    },
+    {
+      key: 'email',
+      header: 'Email',
+      sortable: true,
+    },
+    {
+      key: 'country',
+      header: 'País',
+      sortable: true,
+    },
+    {
+      key: 'status',
+      header: 'Estado',
+      sortable: true,
+    },
+    {
+      key: 'actions',
+      header: 'Acciones',
+      render: (customer: Customer) => (
+        <div className="flex space-x-2">
+          <Button onClick={() => handleEdit(customer)}>Editar</Button>
+          <Button variant="danger" onClick={() => handleDelete(customer.id)}>
+            Eliminar
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <div className="p-4">
@@ -78,20 +109,9 @@ const CustomersPage = () => {
         <Button onClick={() => setIsModalOpen(true)}>Agregar Cliente</Button>
       </div>
       <Table
-        headers={["Nombre", "Teléfono", "Email", "País", "Estado", "Acciones"]}
-        data={customers.map((customer) => [
-          customer.name,
-          customer.phone,
-          customer.email,
-          customer.country,
-          customer.status,
-          <div className="flex space-x-2" key={customer.id}>
-            <Button onClick={() => handleEdit(customer)}>Editar</Button>
-            <Button variant="danger" onClick={() => handleDelete(customer.id)}>
-              Eliminar
-            </Button>
-          </div>,
-        ])}
+        data={customers}
+        columns={columns}
+        keyField="id"
       />
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-xl font-bold mb-4">
