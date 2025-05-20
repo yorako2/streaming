@@ -421,6 +421,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     };
   };
 
+  // Payment methods
   const addPayment = (payment: Omit<Payment, 'id'>) => {
     const newPayment: Payment = {
       ...payment,
@@ -434,6 +435,14 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       setPayments(payments.map(p => p.id === id ? { ...p, ...payment } : p));
     } catch (error) {
       console.error('Error updating payment:', error);
+    }
+  };
+
+  const deletePayment = (id: string) => {
+    try {
+      setPayments(payments.filter(p => p.id !== id));
+    } catch (error) {
+      console.error('Error deleting payment:', error);
     }
   };
 
